@@ -1,0 +1,75 @@
+<h1>Staff</h1>
+
+<div id="staff">
+	<table>
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Email</th>
+				<th>Manager</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			<tr 
+			is='staff-row'
+			v-for='staff in staff'
+			:staff='staff'>
+			</tr>
+
+			<tr>
+				<td>
+					<input type="text" v-model="staff.name">
+					<!-- validation errors -->
+					<span style="color:red;">{{errors.name}}</span>
+				</td>
+
+				<td>
+					<input type="text" v-model="staff.email">
+					<!-- validation errors -->
+					<span style="color:red;">{{errors.name}}</span>
+				</td>
+
+				<td>
+					<input type="checkbox" v-model="staff.manager">
+				</td>
+
+				<td><button @click="hireStaff">Hire</button></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<script type="text/x-template" id="staff-row">
+	<tr>
+		<!-- show input when in edit mode -->
+		<div v-if="editMode">
+			<input type="text" v-model="staff.name">
+			<!-- validation errors -->
+			<span style="color:red;">{{errors.name}}</span>
+		</div>
+		<div v-else> <td>{{staff.name}}</td> </div>
+
+		<div v-if="editMode">
+			<input type="text" v-model="staff.email">
+			<!-- validation errors -->
+			<span style="color:red;">{{errors.name}}</span>
+		</div>
+		<div v-else><td>{{staff.email}}</td></div>
+
+		<div v-if="editMode">
+			<input type="checkbox" v-model="staff.manager">
+			<!-- validation errors -->
+			<span style="color:red;">{{errors.name}}</span>
+		</div>
+		<div v-else><td>{{ staff.manager ? '&#10004;' : '' }}</td></div>
+
+		<td>
+			<button v-if="editMode" @click="updateStaff">Save</button>
+			<button v-else @click="editMode = true;">Edit</button>
+			<!-- Promote / Demote based on current status -->
+			<button v-if="!editMode" @click="toggleManagerStatus">{{staff.manager ? 'Demote': 'Promote'}}</button>
+		</td>
+		<td><button v-if="!editMode" @click="fireStaff" style="color:red;">Fire</button></td>
+	</tr>
+</script>
